@@ -18,8 +18,11 @@ import Layout from '../layouts/Layout.astro';
 				<li><strong>Constraints:</strong> cost, reliability, large datasets, research velocity.</li>
 				<li><strong>Architecture:</strong> Kubernetes microservices, secure pipelines, CI/CD + observability.</li>
 				<li><strong>Outcomes:</strong> production deployments that unblock R&amp;D and daily operations.</li>
-				<li><strong>What I’d change:</strong> tighten service boundaries and harden failure modes further.</li>
 			</ul>
+			<div class="links">
+				<a href="https://simmunome.org" target="_blank" rel="noopener">Platform</a>
+				<a href="https://simmunome.com" target="_blank" rel="noopener">Company</a>
+			</div>
 		</article>
 
 		<article class="card">
@@ -33,7 +36,7 @@ import Layout from '../layouts/Layout.astro';
 		</article>
 
 		<article class="card">
-			<h2>Regulated system — banking services (TEB / BNP Paribas)</h2>
+			<h2>Regulated system — banking services(BNP PARIBAS) </h2>
 			<ul>
 				<li><strong>Context:</strong> core banking features under strict release cycles.</li>
 				<li><strong>Constraints:</strong> compliance, ACID guarantees, security, auditability.</li>
@@ -61,6 +64,28 @@ import Layout from '../layouts/Layout.astro';
 
 	.card h2 {
 		margin-top: 0;
+	}
+
+	.links {
+		display: flex;
+		gap: 1rem;
+		margin-top: 1rem;
+		padding-top: 0.75rem;
+		border-top: 1px solid var(--border);
+	}
+
+	.links a {
+		color: var(--text);
+		text-decoration: none;
+		font-weight: 500;
+		font-size: 0.9rem;
+		border-bottom: 2px solid var(--text);
+		padding-bottom: 2px;
+		transition: opacity 0.2s;
+	}
+
+	.links a:hover {
+		opacity: 0.6;
 	}
 
 	:global(strong) {
