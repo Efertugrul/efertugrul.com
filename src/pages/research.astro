@@ -14,7 +14,7 @@ import Layout from '../layouts/Layout.astro';
 		<section class="research-entry">
 			<h2>Bioimaging Metadata & Schema Translation</h2>
 			<div class="meta">
-				<span>QUAREP-LiMi / UMass Chan Medical School</span>
+				<span><a href="https://www.umassmed.edu/strambiolab/personnel/current-lab-members/" target="_blank" rel="noopener">Strambio Lab</a> / QUAREP-LiMi / UMass Chan Medical School</span>
 			</div>
 			<p class="problem">
 				<strong>Problem:</strong> Microscopy metadata is fragmented across incompatible standards (OME, NBO-Q, vendor-specific formats). Researchers can't query, validate, or share imaging data reliably across platforms.
@@ -115,6 +115,18 @@ import Layout from '../layouts/Layout.astro';
 		margin-bottom: 1.5rem;
 		font-size: 0.875rem;
 		color: #6b7280;
+	}
+
+	.meta a {
+		color: #111827;
+		text-decoration: none;
+		font-weight: 500;
+		border-bottom: 1px solid #111827;
+		transition: opacity 0.2s;
+	}
+
+	.meta a:hover {
+		opacity: 0.6;
 	}
 
 	.meta span:not(:last-child)::after {
