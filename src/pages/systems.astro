@@ -7,95 +7,408 @@ import Layout from '../layouts/Layout.astro';
 	description="Industry systems case studies: context, constraints, architecture decisions, tradeoffs, outcomes."
 	activeNav="systems"
 >
-	<h1>Systems</h1>
-	<p>Case studies, not projects.</p>
+	<main>
+		<header>
+			<h1>Systems</h1>
+			<p class="intro">Case studies by Efe Ertugrul. Real constraints, architecture decisions, and what actually shipped.</p>
+		</header>
 
-	<section class="grid">
-		<article class="card">
-			<h2>Simmunome — AI bioinformatics platform</h2>
-			<ul>
-				<li><strong>Context:</strong> multi-service platform for compute-heavy scientific workflows.</li>
-				<li><strong>Constraints:</strong> cost, reliability, large datasets, research velocity.</li>
-				<li><strong>Architecture:</strong> Kubernetes microservices, secure pipelines, CI/CD + observability.</li>
-				<li><strong>Outcomes:</strong> production deployments that unblock R&amp;D and daily operations.</li>
-			</ul>
+		<nav class="toc">
+			<a href="#simmunome">Simmunome Platform</a>
+			<a href="#compute">Compute Orchestration</a>
+			<a href="#banking">Banking Services</a>
+		</nav>
+
+		<section id="simmunome" class="case-study">
+			<h2>Simmunome — AI Bioinformatics Platform</h2>
+			<div class="meta">Full-stack + DevOps</div>
+			
+			<svg class="diagram" viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<defs>
+					<marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+						<polygon points="0 0, 8 3, 0 6" fill="#111827"/>
+					</marker>
+				</defs>
+				
+				<rect x="10" y="60" width="380" height="120" rx="4" stroke="#111827" stroke-width="1" stroke-dasharray="4 4" fill="none"/>
+				<text x="20" y="50" font-size="10" fill="#6b7280" font-weight="500">Kubernetes Cluster (GKE/EKS)</text>
+				
+				<rect x="30" y="80" width="70" height="40" rx="3" stroke="#111827" stroke-width="1.5" fill="rgba(255,255,255,0.8)"/>
+				<text x="65" y="105" text-anchor="middle" font-size="11" fill="#111827" font-weight="500">API</text>
+				
+				<rect x="120" y="80" width="70" height="40" rx="3" stroke="#111827" stroke-width="1.5" fill="rgba(255,255,255,0.8)"/>
+				<text x="155" y="105" text-anchor="middle" font-size="11" fill="#111827" font-weight="500">Compute</text>
+				
+				<rect x="210" y="80" width="70" height="40" rx="3" stroke="#111827" stroke-width="1.5" fill="rgba(255,255,255,0.8)"/>
+				<text x="245" y="105" text-anchor="middle" font-size="11" fill="#111827" font-weight="500">MongoDB</text>
+				
+				<rect x="300" y="80" width="70" height="40" rx="3" stroke="#111827" stroke-width="1.5" fill="rgba(255,255,255,0.8)"/>
+				<text x="335" y="105" text-anchor="middle" font-size="11" fill="#111827" font-weight="500">S3/GCS</text>
+				
+				<rect x="30" y="135" width="160" height="30" rx="3" stroke="#6b7280" stroke-width="1" fill="none"/>
+				<text x="110" y="155" text-anchor="middle" font-size="10" fill="#6b7280">GitHub Actions CI/CD</text>
+				
+				<rect x="210" y="135" width="160" height="30" rx="3" stroke="#6b7280" stroke-width="1" fill="none"/>
+				<text x="290" y="155" text-anchor="middle" font-size="10" fill="#6b7280">Logs + Metrics + Traces</text>
+				
+				<path d="M 65 25 L 65 80" stroke="#111827" stroke-width="1" marker-end="url(#arrow)"/>
+				<text x="65" y="20" text-anchor="middle" font-size="11" fill="#374151">Auth0</text>
+			</svg>
+
+			<div class="subsection">
+				<h3>What It Does</h3>
+				<p>Platform for protein-protein interaction (PPI) network analysis, drug target validation, and biomarker discovery. Core workloads:</p>
+				<ul>
+					<li><strong>Target validation:</strong> Complex pathfinding algorithms on PPI networks to identify therapeutic targets and predict drug efficacy.</li>
+					<li><strong>Biomarker discovery:</strong> ML classifiers (XGBoost) trained on multi-omics data to identify patient responders and stratify clinical populations.</li>
+					<li><strong>Network simulations:</strong> Graph-based algorithms (PageRank variants, network diffusion) for scoring protein interactions and pathway enrichment.</li>
+				</ul>
+				<p>Ingests proteomics, genomics, and clinical metadata (hundreds of GBs per analysis). Exposes interactive tools for researchers via React frontend.</p>
+			</div>
+
+			<div class="subsection">
+				<h3>Infrastructure Design</h3>
+				<p><strong>Node groups:</strong> GKE/EKS with 3 node pools: (1) general-purpose (n2-standard-4) for API/DB, (2) compute-optimized (c2-standard-8) for graph algorithms, (3) spot instances (c2-standard-16) for batch ML training. Spot saves ~60% on compute-heavy jobs where failure is tolerable.</p>
+				<p><strong>When to use what:</strong> API traffic → general-purpose (stable, low-latency). PPI pathfinding → compute-optimized (CPU-bound, need consistent performance). XGBoost training → spot (long-running, checkpointed every 15min, can tolerate evictions).</p>
+			</div>
+
+			<div class="subsection">
+				<h3>Key Decisions</h3>
+				<p><strong>K8s over serverless:</strong> Jobs run 10min–2hr, too long for Lambda. K8s gives workload isolation, autoscaling, and per-service resource tuning.</p>
+				<p><strong>MongoDB:</strong> Hierarchical data model (orgs → projects → analyses → results) with nested metadata. Scientific teams add fields weekly. Indexed on user IDs, project IDs, timestamps. Queries &lt; 100ms with millions of documents.</p>
+				<p><strong>Storage tiering:</strong> Hot data (user queries, recent results) in MongoDB. Cold data (multi-GB PPI networks, raw omics files) in S3/GCS with signed URLs. Keeps queries fast and costs low.</p>
+				<p><strong>CI/CD:</strong> GitHub Actions for linting, tests, Docker builds. Auto-deploy to staging on merge. Deployment time: ~1 hour → 8 minutes.</p>
+			</div>
+
+			<div class="subsection">
+				<h3>Issues Fixed</h3>
+				<p><strong>Connection pooling:</strong> Initial: new DB connection per job → hit connection limits. Fix: pool with max size tuned to memory. Latency -40%.</p>
+				<p><strong>Spot evictions:</strong> Lost 3 hours of compute when GCP reclaimed nodes. Fix: checkpoint every 15min. Evictions now cost ~2min instead of full restart.</p>
+				<p><strong>Observability:</strong> Unindexed query caused latency spike, took 2 hours to find. Added Prometheus metrics (latency, queue depth, job duration, errors). Alerts fire before users notice.</p>
+			</div>
+
+			<div class="subsection">
+				<h3>Tech Stack</h3>
+				<p>Python (Flask, FastAPI), React, MongoDB, Redis, Docker, Kubernetes (GKE/EKS), GCP, AWS, Auth0, GitHub Actions, Prometheus, S3/GCS</p>
+			</div>
+
 			<div class="links">
 				<a href="https://simmunome.org" target="_blank" rel="noopener">Platform</a>
 				<a href="https://simmunome.com" target="_blank" rel="noopener">Company</a>
 			</div>
-		</article>
+		</section>
 
-		<article class="card">
-			<h2>Infra-heavy system — compute orchestration</h2>
-			<ul>
-				<li><strong>Context:</strong> recurring compute jobs with bursty demand and long runtimes.</li>
-				<li><strong>Constraints:</strong> queueing, retries, idempotency, cost ceilings.</li>
-				<li><strong>Architecture:</strong> workload isolation, autoscaling, structured telemetry.</li>
-				<li><strong>Tradeoffs:</strong> fewer moving parts over maximal flexibility.</li>
-			</ul>
-		</article>
+		<section id="compute" class="case-study">
 
-		<article class="card">
-			<h2>Regulated system — banking services(BNP PARIBAS) </h2>
-			<ul>
-				<li><strong>Context:</strong> core banking features under strict release cycles.</li>
-				<li><strong>Constraints:</strong> compliance, ACID guarantees, security, auditability.</li>
-				<li><strong>Architecture:</strong> Spring Boot services, RBAC, monitoring, tests.</li>
-				<li><strong>Outcomes:</strong> secure, reliable workflows for transactions and account operations.</li>
-			</ul>
-		</article>
-	</section>
+			<h2>Compute Orchestration for Scientific Workloads</h2>
+			<div class="meta">Simmunome platform component | Infra-heavy system design</div>
+			
+			<svg class="diagram" viewBox="0 0 380 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<defs>
+					<marker id="arrow3" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+						<polygon points="0 0, 8 3, 0 6" fill="#111827"/>
+					</marker>
+				</defs>
+				
+				<rect x="20" y="50" width="70" height="45" rx="3" stroke="#111827" stroke-width="1.5" fill="rgba(255,255,255,0.8)"/>
+				<text x="55" y="68" text-anchor="middle" font-size="10" fill="#111827" font-weight="500">Job</text>
+				<text x="55" y="82" text-anchor="middle" font-size="10" fill="#111827" font-weight="500">Queue</text>
+				
+				<path d="M 90 72 L 120 72" stroke="#111827" stroke-width="1" marker-end="url(#arrow3)"/>
+				
+				<rect x="120" y="20" width="140" height="105" rx="4" stroke="#111827" stroke-width="1" stroke-dasharray="3 3" fill="none"/>
+				<text x="130" y="35" font-size="9" fill="#6b7280" font-weight="500">Worker Pool (autoscale 2–10 pods)</text>
+				
+				<rect x="135" y="50" width="50" height="35" rx="3" stroke="#111827" stroke-width="1" fill="rgba(255,255,255,0.8)"/>
+				<text x="160" y="71" text-anchor="middle" font-size="9" fill="#111827">Worker 1</text>
+				
+				<rect x="135" y="90" width="50" height="35" rx="3" stroke="#111827" stroke-width="1" fill="rgba(255,255,255,0.8)" stroke-dasharray="2 2"/>
+				<text x="160" y="111" text-anchor="middle" font-size="9" fill="#6b7280">Worker N</text>
+				
+				<rect x="195" y="50" width="50" height="35" rx="3" stroke="#111827" stroke-width="1" fill="rgba(255,255,255,0.8)"/>
+				<text x="220" y="71" text-anchor="middle" font-size="9" fill="#111827">Worker 2</text>
+				
+				<path d="M 260 67 L 290 67" stroke="#111827" stroke-width="1" marker-end="url(#arrow3)"/>
+				
+				<rect x="290" y="50" width="70" height="45" rx="3" stroke="#111827" stroke-width="1.5" fill="rgba(255,255,255,0.8)"/>
+				<text x="325" y="68" text-anchor="middle" font-size="10" fill="#111827" font-weight="500">Results</text>
+				<text x="325" y="82" text-anchor="middle" font-size="10" fill="#111827" font-weight="500">Store</text>
+				
+				<rect x="120" y="135" width="140" height="20" rx="3" stroke="#6b7280" stroke-width="1" fill="none"/>
+				<text x="190" y="149" text-anchor="middle" font-size="8" fill="#6b7280">Telemetry & Exponential Backoff</text>
+				
+				<path d="M 55 20 L 55 50" stroke="#6b7280" stroke-width="1" marker-end="url(#arrow3)"/>
+				<text x="55" y="15" text-anchor="middle" font-size="9" fill="#374151">Jobs in</text>
+			</svg>
+
+			<div class="subsection">
+				<h3>Problem</h3>
+				<p>Batch system for CPU-bound graph algorithms on PPI networks: PageRank-style scoring (100K+ nodes), Monte Carlo pathway enrichment, network diffusion for target ranking. Jobs take 10min–2hr, arrive in bursts (5–20 at once, then nothing for an hour). Budget: ~$200/mo compute.</p>
+			</div>
+
+			<div class="subsection">
+				<h3>Design</h3>
+				<p><strong>Queue:</strong> MongoDB-backed (already in stack for job metadata). Status field: `pending` → `running` → `complete`/`failed`. Workers poll with TTL lock. &lt;50ms latency.</p>
+				<p><strong>Autoscaling:</strong> K8s HPA scales workers 2–10 based on queue depth (custom metric from MongoDB). Min=2 (low cold-start latency), Max=10 (cost control).</p>
+				<p><strong>Resilience:</strong> Exponential backoff retries (1min, 5min, 15min). Jobs &gt;30min checkpoint to S3 every 15min. Spot evictions resume from checkpoint (~40% compute savings on failures).</p>
+				<p><strong>Isolation:</strong> Each job in own subprocess with memory/CPU limits. One OOM doesn't crash worker or affect other jobs.</p>
+			</div>
+
+			<div class="subsection">
+				<h3>Issues Fixed</h3>
+				<p><strong>Polling storms:</strong> 10 workers × 2 QPS (500ms poll) = MongoDB CPU spike. Fix: long-polling (5s) + Redis "job available" flag. Polling load -90%.</p>
+				<p><strong>Memory leaks:</strong> NetworkX/NumPy leak on large graphs. Workers OOM after ~50 jobs. Fix: auto-restart after 20 jobs.</p>
+				<p><strong>Duplicate results:</strong> Worker crashes after writing results but before updating status → next worker re-runs. Fix: check result existence (by job_id) before starting.</p>
+			</div>
+
+			<div class="subsection">
+				<h3>Tradeoffs</h3>
+				<p><strong>MongoDB vs SQS:</strong> Simpler (one less service) but loses visibility guarantees. Good for &lt;1K jobs/day, wouldn't scale to 100K+ without re-arch.</p>
+				<p><strong>Checkpointing cost:</strong> +2% runtime overhead, -40% wasted compute on failures. Net win.</p>
+				<p><strong>Custom queue vs Airflow/Celery:</strong> Less operational complexity for single-step jobs. Would switch if DAGs needed.</p>
+			</div>
+		</section>
+
+		<section id="banking" class="case-study">
+
+			<h2>Core Banking Services — BNP Paribas (TEB)</h2>
+			<div class="meta">Software Architect Assistant</div>
+			
+			<svg class="diagram" viewBox="0 0 350 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<defs>
+					<marker id="arrow4" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+						<polygon points="0 0, 8 3, 0 6" fill="#111827"/>
+					</marker>
+				</defs>
+				
+				<rect x="20" y="50" width="60" height="40" rx="3" stroke="#111827" stroke-width="1.5" fill="rgba(255,255,255,0.8)"/>
+				<text x="50" y="67" text-anchor="middle" font-size="10" fill="#111827" font-weight="500">API</text>
+				<text x="50" y="80" text-anchor="middle" font-size="9" fill="#374151">Gateway</text>
+				
+				<path d="M 80 70 L 110 70" stroke="#111827" stroke-width="1" marker-end="url(#arrow4)"/>
+				<text x="95" y="65" text-anchor="middle" font-size="8" fill="#6b7280">RBAC</text>
+				
+				<rect x="110" y="50" width="70" height="40" rx="3" stroke="#111827" stroke-width="1.5" fill="rgba(255,255,255,0.8)"/>
+				<text x="145" y="67" text-anchor="middle" font-size="10" fill="#111827" font-weight="500">Services</text>
+				<text x="145" y="80" text-anchor="middle" font-size="9" fill="#374151">Spring Boot</text>
+				
+				<path d="M 180 70 L 210 70" stroke="#111827" stroke-width="1" marker-end="url(#arrow4)"/>
+				<text x="195" y="65" text-anchor="middle" font-size="8" fill="#6b7280">ACID</text>
+				
+				<rect x="210" y="50" width="60" height="40" rx="3" stroke="#111827" stroke-width="1.5" fill="rgba(255,255,255,0.8)"/>
+				<text x="240" y="67" text-anchor="middle" font-size="10" fill="#111827" font-weight="500">Database</text>
+				<text x="240" y="80" text-anchor="middle" font-size="9" fill="#374151">TX logs</text>
+				
+				<rect x="280" y="50" width="50" height="40" rx="3" stroke="#111827" stroke-width="1.5" fill="rgba(255,255,255,0.8)"/>
+				<text x="305" y="67" text-anchor="middle" font-size="10" fill="#111827" font-weight="500">Audit</text>
+				<text x="305" y="80" text-anchor="middle" font-size="9" fill="#374151">Trail</text>
+				
+				<path d="M 145 90 L 145 105 L 240 105 L 240 90" stroke="#6b7280" stroke-width="1" stroke-dasharray="2 2" fill="none"/>
+				<path d="M 240 90 L 240 105 L 305 105 L 305 90" stroke="#6b7280" stroke-width="1" stroke-dasharray="2 2" fill="none"/>
+				
+				<rect x="20" y="110" width="310" height="20" rx="3" stroke="#6b7280" stroke-width="1" fill="none"/>
+				<text x="175" y="124" text-anchor="middle" font-size="8" fill="#6b7280">Monitoring & Compliance Layer</text>
+				
+				<path d="M 50 30 L 50 50" stroke="#111827" stroke-width="1" marker-end="url(#arrow4)"/>
+				<text x="50" y="25" text-anchor="middle" font-size="9" fill="#374151">Requests</text>
+			</svg>
+
+			<div class="subsection">
+				<h3>Problem</h3>
+				<p>Core banking at TEB Bank (BNP Paribas): account operations, transactions, funds transfers, loan routing. Millions of retail customers. Strict regulatory compliance (financial audits, PCI-DSS, EU data residency). Performance target: P95 &lt; 200ms for reads, &lt; 1s for transactions. Zero downtime deploys.</p>
+			</div>
+
+			<div class="subsection">
+				<h3>Design</h3>
+				<p><strong>Microservices:</strong> Separate Spring Boot apps for accounts, transactions, loans. Each owns its DB schema (no shared DB) for independent deploys and failure isolation.</p>
+				<p><strong>Security:</strong> JWT auth + RBAC (customer/teller/admin). Custom @RequiresRole annotations. Failed auth → security audit trail.</p>
+				<p><strong>Transactions:</strong> @Transactional with isolation levels (READ_COMMITTED for queries, SERIALIZABLE for transfers). Multi-step workflows (debit → credit → notify) wrapped in single transaction.</p>
+				<p><strong>Validation:</strong> 3 layers: (1) OpenAPI schema, (2) Spring Validator business rules, (3) DB constraints. Blocks injection attacks and malformed requests.</p>
+				<p><strong>Monitoring:</strong> Spring Actuator + Prometheus. Alerts on error rate &gt; 1% or P95 &gt; 500ms.</p>
+			</div>
+
+			<div class="subsection">
+				<h3>Services Built</h3>
+				<p><strong>Funds transfer:</strong> REST API with 3-layer validation (balance check, account active, user authorized). DB transaction prevents race conditions. Idempotency keys prevent duplicates on retry.</p>
+				<p><strong>Loan routing:</strong> GraphQL API. Routes by amount (small → auto-approve, large → underwriter) + credit score (external service via RestTemplate + circuit breaker).</p>
+				<p><strong>Audit log:</strong> Immutable append-only table. Every transaction logged: user ID, timestamp, operation, before/after state.</p>
+			</div>
+
+			<div class="subsection">
+				<h3>Lessons</h3>
+				<p><strong>DB performance:</strong> One missing index on "account_id" caused P95 50ms → 800ms. EXPLAIN ANALYZE + indexes on FKs + batch queries essential.</p>
+				<p><strong>Defensive programming:</strong> Assume malicious input, failing services, edge cases. Multi-layer validation, explicit exception handling, tests for failure modes.</p>
+				<p><strong>Code review rigor:</strong> 2+ reviewers check security, correctness, maintainability. Prevents bugs reaching production.</p>
+			</div>
+
+			<div class="subsection">
+				<h3>Tech Stack</h3>
+				<p>Java 11, Spring Boot, Spring Data JPA, Spring Security, Hibernate, GraphQL Java, Maven, SQL (PostgreSQL), Docker, JUnit/Mockito, Git</p>
+			</div>
+		</section>
+	</main>
 </Layout>
 
 <style>
-	.grid {
-		display: grid;
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-		gap: 14px;
-		margin-top: 18px;
+	main {
+		max-width: 900px;
+		margin: 0 auto;
+		padding: 4rem 1.5rem;
 	}
 
-	.card {
-		border: 1px solid var(--border);
-		border-radius: 16px;
-		padding: 14px 14px;
-		background: rgba(255, 255, 255, 0.8);
+	header {
+		margin-bottom: 3rem;
 	}
 
-	.card h2 {
-		margin-top: 0;
+	h1 {
+		font-size: 2.5rem;
+		font-weight: 600;
+		margin: 0 0 0.75rem;
+		letter-spacing: -0.02em;
+	}
+
+	.intro {
+		font-size: 1.125rem;
+		line-height: 1.7;
+		color: #6b7280;
+		margin: 0;
+	}
+
+	.toc {
+		display: flex;
+		gap: 1.5rem;
+		padding: 1rem 0;
+		border-top: 1px solid #e5e7eb;
+		border-bottom: 1px solid #e5e7eb;
+		margin-bottom: 3rem;
+	}
+
+	.toc a {
+		color: #6b7280;
+		text-decoration: none;
+		font-weight: 500;
+		font-size: 0.95rem;
+		transition: color 0.2s;
+	}
+
+	.toc a:hover {
+		color: #111827;
+	}
+
+	.case-study {
+		margin-bottom: 5rem;
+		padding-bottom: 4rem;
+		border-bottom: 2px solid #e5e7eb;
+	}
+
+	.case-study:last-of-type {
+		border-bottom: none;
+	}
+
+	.case-study h2 {
+		font-size: 2rem;
+		font-weight: 600;
+		margin: 0 0 0.5rem;
+		letter-spacing: -0.015em;
+		color: #111827;
+	}
+
+	.meta {
+		font-size: 0.875rem;
+		color: #6b7280;
+		margin-bottom: 2rem;
+		font-style: italic;
+	}
+
+	.subsection {
+		margin-bottom: 2.5rem;
+	}
+
+	.subsection h3 {
+		font-size: 1.25rem;
+		font-weight: 600;
+		margin: 0 0 1rem;
+		color: #111827;
+	}
+
+	.subsection p {
+		line-height: 1.7;
+		color: #374151;
+		margin-bottom: 1rem;
+	}
+
+	.subsection ul {
+		margin: 1rem 0;
+		padding-left: 1.5rem;
+	}
+
+	.subsection li {
+		line-height: 1.7;
+		color: #374151;
+		margin-bottom: 0.75rem;
+	}
+
+	.diagram {
+		width: 100%;
+		max-width: 100%;
+		height: auto;
+		margin: 0 0 2rem;
+		padding: 1rem;
+		background: rgba(249, 250, 251, 0.4);
+		border: 1px solid #e5e7eb;
+		border-radius: 8px;
+		box-sizing: border-box;
 	}
 
 	.links {
 		display: flex;
 		gap: 1rem;
-		margin-top: 1rem;
-		padding-top: 0.75rem;
-		border-top: 1px solid var(--border);
+		margin-top: 1.5rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid #e5e7eb;
 	}
 
 	.links a {
-		color: var(--text);
+		color: #ffffff;
+		background: #111827;
 		text-decoration: none;
-		font-weight: 500;
-		font-size: 0.9rem;
-		border-bottom: 2px solid var(--text);
-		padding-bottom: 2px;
-		transition: opacity 0.2s;
+		font-weight: 600;
+		font-size: 0.95rem;
+		padding: 0.65rem 1.25rem;
+		border-radius: 6px;
+		transition: background 0.2s;
+		display: inline-block;
 	}
 
 	.links a:hover {
-		opacity: 0.6;
+		background: #374151;
 	}
 
 	:global(strong) {
-		color: var(--text);
+		color: #111827;
 		font-weight: 600;
 	}
 
-	@media (max-width: 960px) {
-		.grid {
-			grid-template-columns: 1fr;
+	@media (max-width: 768px) {
+		main {
+			padding: 3rem 1.25rem;
+		}
+
+		h1 {
+			font-size: 2rem;
+		}
+
+		.case-study h2 {
+			font-size: 1.5rem;
+		}
+
+		.toc {
+			flex-direction: column;
+			gap: 0.75rem;
+		}
+
+		.diagram {
+			padding: 0.75rem;
 		}
 	}
 </style>
