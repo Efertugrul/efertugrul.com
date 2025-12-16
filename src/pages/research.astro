@@ -1,0 +1,181 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Research — Efe Ertugrul">
+	<main>
+		<header>
+			<h1>Research</h1>
+			<p class="intro">
+				I work at the intersection of infrastructure and scientific reproducibility—building systems that make bioimaging and biomedical data interoperable, standardized, and production-ready.
+			</p>
+		</header>
+
+		<section class="research-entry">
+			<h2>Bioimaging Metadata & Schema Translation</h2>
+			<div class="meta">
+				<span>QUAREP-LiMi / UMass Chan Medical School</span>
+				<span>2024–Present</span>
+			</div>
+			<p class="problem">
+				<strong>Problem:</strong> Microscopy metadata is fragmented across incompatible standards (OME, NBO-Q, vendor-specific formats). Researchers can't query, validate, or share imaging data reliably across platforms.
+			</p>
+			<p>
+				<strong>What I'm doing:</strong> Building automated pipelines to translate OME and NBO-Q XSD schemas into LinkML schema definitions. This enables unified metadata models, cross-platform validation, and ontology-backed data harmonization.
+			</p>
+			<p>
+				<strong>Impact:</strong> Enables reproducible imaging workflows that comply with FAIR data principles. Delivered a talk on this work at the 2025 OME Community Congress (MBL Woods Hole).
+			</p>
+			<div class="links">
+				<a href="https://github.com/Efertugrul" target="_blank" rel="noopener">Code</a>
+			</div>
+		</section>
+
+		<section class="research-entry">
+			<h2>Schema Translation Pipelines</h2>
+			<div class="meta">
+				<span>LinkML / XSD → Graph Models</span>
+			</div>
+			<p class="problem">
+				<strong>Problem:</strong> Converting complex XML schemas (XSD) to modern data modeling frameworks is manual, error-prone, and blocks interoperability efforts in bioinformatics.
+			</p>
+			<p>
+				<strong>Approach:</strong> Developed extensible tooling in Python for automated XSD parsing, transformation rules, and LinkML schema generation. Built validation layers to ensure semantic consistency across source and target formats.
+			</p>
+			<p>
+				<strong>Why it matters:</strong> Accelerates metadata standardization efforts across imaging, genomics, and clinical research domains.
+			</p>
+		</section>
+
+		<section class="research-entry">
+			<h2>FAIR Data & Ontology Integration</h2>
+			<div class="meta">
+				<span>Biomedical Imaging Informatics</span>
+			</div>
+			<p class="problem">
+				<strong>Problem:</strong> Scientific datasets are difficult to find, access, integrate, and reuse because metadata lacks semantic structure and controlled vocabularies.
+			</p>
+			<p>
+				<strong>Contribution:</strong> Implementing FAIR principles through LinkML, connecting bioimaging metadata to biomedical ontologies (e.g., Cell Ontology, Uberon), enabling structured queries and cross-study integration.
+			</p>
+			<p>
+				<strong>Tech:</strong> Python, LinkML, OWL/RDF, graph-based models, XSD/XML parsing.
+			</p>
+		</section>
+	</main>
+</Layout>
+
+<style>
+	main {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 4rem 1.5rem;
+	}
+
+	header {
+		margin-bottom: 4rem;
+	}
+
+	h1 {
+		font-size: 2.5rem;
+		font-weight: 600;
+		margin: 0 0 1rem;
+		letter-spacing: -0.02em;
+	}
+
+	.intro {
+		font-size: 1.125rem;
+		line-height: 1.7;
+		color: #4b5563;
+		margin: 0;
+	}
+
+	.research-entry {
+		margin-bottom: 4rem;
+		padding-bottom: 3rem;
+		border-bottom: 1px solid #e5e7eb;
+	}
+
+	.research-entry:last-of-type {
+		border-bottom: none;
+	}
+
+	h2 {
+		font-size: 1.5rem;
+		font-weight: 600;
+		margin: 0 0 0.5rem;
+		letter-spacing: -0.01em;
+	}
+
+	.meta {
+		display: flex;
+		gap: 1rem;
+		margin-bottom: 1.5rem;
+		font-size: 0.875rem;
+		color: #6b7280;
+	}
+
+	.meta span:not(:last-child)::after {
+		content: '•';
+		margin-left: 1rem;
+		color: #d1d5db;
+	}
+
+	.problem {
+		margin-bottom: 1rem;
+		line-height: 1.7;
+	}
+
+	.research-entry p {
+		line-height: 1.7;
+		margin-bottom: 1rem;
+		color: #374151;
+	}
+
+	.research-entry p:last-of-type {
+		margin-bottom: 1.5rem;
+	}
+
+	strong {
+		font-weight: 600;
+		color: #111827;
+	}
+
+	.links {
+		display: flex;
+		gap: 1rem;
+	}
+
+	.links a {
+		color: #111827;
+		text-decoration: none;
+		font-weight: 500;
+		border-bottom: 2px solid #111827;
+		padding-bottom: 2px;
+		transition: opacity 0.2s;
+	}
+
+	.links a:hover {
+		opacity: 0.6;
+	}
+
+	@media (max-width: 640px) {
+		main {
+			padding: 3rem 1.25rem;
+		}
+
+		h1 {
+			font-size: 2rem;
+		}
+
+		.meta {
+			flex-direction: column;
+			gap: 0.25rem;
+		}
+
+		.meta span:not(:last-child)::after {
+			display: none;
+		}
+	}
+</style>
+

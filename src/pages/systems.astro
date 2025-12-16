@@ -1,0 +1,78 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+	title="Systems — Efe Ertugrul"
+	description="Industry systems case studies: context, constraints, architecture decisions, tradeoffs, outcomes."
+	activeNav="systems"
+>
+	<h1>Systems</h1>
+	<p>Case studies, not projects.</p>
+
+	<section class="grid">
+		<article class="card">
+			<h2>Simmunome — AI bioinformatics platform</h2>
+			<ul>
+				<li><strong>Context:</strong> multi-service platform for compute-heavy scientific workflows.</li>
+				<li><strong>Constraints:</strong> cost, reliability, large datasets, research velocity.</li>
+				<li><strong>Architecture:</strong> Kubernetes microservices, secure pipelines, CI/CD + observability.</li>
+				<li><strong>Outcomes:</strong> production deployments that unblock R&amp;D and daily operations.</li>
+				<li><strong>What I’d change:</strong> tighten service boundaries and harden failure modes further.</li>
+			</ul>
+		</article>
+
+		<article class="card">
+			<h2>Infra-heavy system — compute orchestration</h2>
+			<ul>
+				<li><strong>Context:</strong> recurring compute jobs with bursty demand and long runtimes.</li>
+				<li><strong>Constraints:</strong> queueing, retries, idempotency, cost ceilings.</li>
+				<li><strong>Architecture:</strong> workload isolation, autoscaling, structured telemetry.</li>
+				<li><strong>Tradeoffs:</strong> fewer moving parts over maximal flexibility.</li>
+			</ul>
+		</article>
+
+		<article class="card">
+			<h2>Regulated system — banking services (TEB / BNP Paribas)</h2>
+			<ul>
+				<li><strong>Context:</strong> core banking features under strict release cycles.</li>
+				<li><strong>Constraints:</strong> compliance, ACID guarantees, security, auditability.</li>
+				<li><strong>Architecture:</strong> Spring Boot services, RBAC, monitoring, tests.</li>
+				<li><strong>Outcomes:</strong> secure, reliable workflows for transactions and account operations.</li>
+			</ul>
+		</article>
+	</section>
+</Layout>
+
+<style>
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 14px;
+		margin-top: 18px;
+	}
+
+	.card {
+		border: 1px solid var(--border);
+		border-radius: 16px;
+		padding: 14px 14px;
+		background: rgba(255, 255, 255, 0.8);
+	}
+
+	.card h2 {
+		margin-top: 0;
+	}
+
+	:global(strong) {
+		color: var(--text);
+		font-weight: 600;
+	}
+
+	@media (max-width: 960px) {
+		.grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
+
+

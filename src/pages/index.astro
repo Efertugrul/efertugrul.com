@@ -1,11 +1,93 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
-<Layout>
-	<Welcome />
+<Layout
+	title="Efe Ertugrul"
+	description="I design and ship production systems at the intersection of AI, infrastructure, and scientific research."
+	activeNav="home"
+>
+	<section class="hero">
+		<h1>I design and ship production systems at the intersection of AI, infrastructure, and scientific research.</h1>
+		<div class="exits">
+			<a class="exit" href="/systems">
+				<span class="exit-title">Industry Systems</span>
+				<span class="exit-meta">Case studies. Constraints. Tradeoffs.</span>
+			</a>
+			<a class="exit" href="/research">
+				<span class="exit-title">Research</span>
+				<span class="exit-meta">Metadata, schemas, FAIR pipelines.</span>
+			</a>
+			<a class="exit" href="/writing">
+				<span class="exit-title">Writing</span>
+				<span class="exit-meta">Short, opinionated, scar-backed.</span>
+			</a>
+		</div>
+	</section>
+
+	<section class="below">
+		<ul>
+			<li>Own end-to-end systems: architecture → implementation → operations.</li>
+			<li>Ship on Kubernetes in cloud environments with reliability and cost constraints.</li>
+			<li>Build secure data pipelines and performance-critical backends for scientific workloads.</li>
+		</ul>
+
+		<p class="cta">
+			If you want to see how I think, start here → <a href="/writing">Writing</a>
+		</p>
+	</section>
 </Layout>
+
+<style>
+	.hero {
+		display: grid;
+		gap: 24px;
+	}
+
+	.exits {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 12px;
+	}
+
+	.exit {
+		display: grid;
+		gap: 6px;
+		padding: 14px 14px;
+		border: 1px solid var(--border);
+		border-radius: 16px;
+		text-decoration: none;
+		background: rgba(255, 255, 255, 0.6);
+	}
+
+	.exit:hover {
+		background: rgba(15, 23, 42, 0.03);
+	}
+
+	.exit-title {
+		font-weight: 600;
+		color: var(--text);
+	}
+
+	.exit-meta {
+		color: var(--muted);
+		font-size: 0.95rem;
+	}
+
+	.below {
+		margin-top: 32px;
+		padding-top: 18px;
+		border-top: 1px solid var(--border);
+	}
+
+	.cta {
+		margin-top: 12px;
+		color: var(--text);
+	}
+
+	@media (max-width: 760px) {
+		.exits {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
