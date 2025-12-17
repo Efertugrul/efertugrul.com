@@ -11,46 +11,10 @@ import Layout from '../layouts/Layout.astro';
 			</p>
 		</header>
 
-		<section class="posts">
-			<article class="post">
-				<h2>Why Research Code Collapses in Production</h2>
-				<p class="date">Coming soon</p>
-				<p>
-					Notebooks and scripts work until you need reliability, scale, or someone else to run them. What breaks, why it breaks, and what changes when you're accountable for uptime.
-				</p>
-			</article>
-
-			<article class="post">
-				<h2>Metadata is Infrastructure</h2>
-				<p class="date">Coming soon</p>
-				<p>
-					Everyone treats metadata as an afterthought until queries fail, pipelines break, or compliance audits happen. Why metadata design is an engineering problem, not a documentation problem.
-				</p>
-			</article>
-
-			<article class="post">
-				<h2>Kubernetes is Not Your Bottleneck</h2>
-				<p class="date">Coming soon</p>
-				<p>
-					Most performance problems aren't in your orchestration layer. They're in your queries, your data model, or your API design. When K8s actually matters and when it's a distraction.
-				</p>
-			</article>
-
-			<article class="post">
-				<h2>What Shipping ML Systems Actually Costs</h2>
-				<p class="date">Coming soon</p>
-				<p>
-					Training a model is 10% of the work. The other 90% is data pipelines, versioning, monitoring, retraining workflows, and making sure it doesn't fail silently. Real numbers from production systems.
-				</p>
-			</article>
-
-			<article class="post">
-				<h2>Schema Translation: The Unsexy Work That Unblocks Everything</h2>
-				<p class="date">Coming soon</p>
-				<p>
-					How converting XSD to LinkML enabled cross-platform validation for bioimaging metadata. The engineering decisions, the tradeoffs, and why this work matters more than it sounds like it does.
-				</p>
-			</article>
+		<section class="links">
+			<a class="primary" href="https://medium.com/@efe.ertugrul" target="_blank" rel="me noopener">
+				Read on Medium
+			</a>
 		</section>
 	</main>
 </Layout>
@@ -80,40 +44,26 @@ import Layout from '../layouts/Layout.astro';
 		margin: 0;
 	}
 
-	.posts {
-		display: flex;
-		flex-direction: column;
-		gap: 3rem;
+	.links {
+		margin-top: 2rem;
+		padding-top: 2rem;
+		border-top: 1px solid #e5e7eb;
 	}
 
-	.post {
-		padding-bottom: 3rem;
-		border-bottom: 1px solid #e5e7eb;
-	}
-
-	.post:last-of-type {
-		border-bottom: none;
-	}
-
-	h2 {
-		font-size: 1.5rem;
+	.primary {
+		display: inline-block;
+		color: #ffffff;
+		background: #111827;
+		text-decoration: none;
 		font-weight: 600;
-		margin: 0 0 0.5rem;
-		letter-spacing: -0.01em;
-		color: #111827;
+		font-size: 1rem;
+		padding: 0.75rem 1.25rem;
+		border-radius: 8px;
+		transition: background 0.2s;
 	}
 
-	.date {
-		font-size: 0.875rem;
-		color: #6b7280;
-		margin: 0 0 1rem;
-		font-style: italic;
-	}
-
-	.post p:last-of-type {
-		line-height: 1.7;
-		color: #374151;
-		margin: 0;
+	.primary:hover {
+		background: #374151;
 	}
 
 	@media (max-width: 640px) {
@@ -123,10 +73,6 @@ import Layout from '../layouts/Layout.astro';
 
 		h1 {
 			font-size: 2rem;
-		}
-
-		.posts {
-			gap: 2.5rem;
 		}
 	}
 </style>
