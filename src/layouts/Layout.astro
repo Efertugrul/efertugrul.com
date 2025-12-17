@@ -10,6 +10,10 @@ const {
 	description = 'Efe Ertugrul — systems, research, writing.',
 	activeNav,
 } = Astro.props;
+
+const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : Astro.url.toString();
+const ogTitle = title;
+const ogDescription = description;
 ---
 
 <!doctype html>
@@ -20,6 +24,33 @@ const {
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
+		<meta name="author" content="Efe Ertugrul" />
+		<link rel="canonical" href={canonicalUrl} />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Efe Ertugrul" />
+		<meta property="og:title" content={ogTitle} />
+		<meta property="og:description" content={ogDescription} />
+		<meta property="og:url" content={canonicalUrl} />
+
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content={ogTitle} />
+		<meta name="twitter:description" content={ogDescription} />
+
+		<script type="application/ld+json">
+			{JSON.stringify({
+				'@context': 'https://schema.org',
+				'@type': 'Person',
+				name: 'Efe Ertugrul',
+				url: Astro.site ? Astro.site.toString() : canonicalUrl,
+				sameAs: [
+					'https://github.com/Efertugrul',
+					'https://linkedin.com/in/efe-ertugrul',
+					'https://www.instagram.com/efeertugrulx/',
+					'https://medium.com/@efe.ertugrul',
+				],
+			})}
+		</script>
 		<title>{title}</title>
 	</head>
 	<body>
