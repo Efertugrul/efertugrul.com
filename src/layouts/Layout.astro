@@ -4,7 +4,7 @@ import { ViewTransitions } from 'astro:transitions';
 type Props = {
 	title?: string;
 	description?: string;
-	activeNav?: 'home' | 'systems' | 'research' | 'writing' | 'contact';
+	activeNav?: 'home' | 'systems' | 'research' | 'writing' | 'music' | 'contact';
 };
 
 const {
@@ -12,6 +12,23 @@ const {
 	description = 'Efe Ertugrul — systems, research, writing.',
 	activeNav,
 } = Astro.props;
+
+const path = Astro.url.pathname;
+const inferredNav: Props['activeNav'] =
+	path === '/'
+		? 'home'
+		: path.startsWith('/systems')
+			? 'systems'
+			: path.startsWith('/research')
+				? 'research'
+				: path.startsWith('/writing')
+					? 'writing'
+					: path.startsWith('/music')
+						? 'music'
+						: path.startsWith('/contact')
+							? 'contact'
+							: undefined;
+const resolvedNav = activeNav ?? inferredNav;
 
 const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : Astro.url.toString();
 const ogTitle = title;
@@ -61,16 +78,17 @@ const ogDescription = description;
 			<div class="container header-inner">
 				<a class="brand" href="/">Efe Ertugrul</a>
 				<nav class="nav" aria-label="Primary">
-					<a class:list={['nav-link', activeNav === 'home' && 'is-active']} href="/">Home</a>
-					<a class:list={['nav-link', activeNav === 'systems' && 'is-active']} href="/systems">Systems</a>
-					<a class:list={['nav-link', activeNav === 'research' && 'is-active']} href="/research">Research</a>
-					<a class:list={['nav-link', activeNav === 'writing' && 'is-active']} href="/writing">Writing</a>
-					<a class:list={['nav-link', activeNav === 'contact' && 'is-active']} href="/contact">Contact</a>
+					<a class:list={['nav-link', resolvedNav === 'home' && 'is-active']} href="/">Home</a>
+					<a class:list={['nav-link', resolvedNav === 'systems' && 'is-active']} href="/systems">Systems</a>
+					<a class:list={['nav-link', resolvedNav === 'research' && 'is-active']} href="/research">Research</a>
+					<a class:list={['nav-link', resolvedNav === 'writing' && 'is-active']} href="/writing">Writing</a>
+					<a class:list={['nav-link', resolvedNav === 'music' && 'is-active']} href="/music">Music</a>
+					<a class:list={['nav-link', resolvedNav === 'contact' && 'is-active']} href="/contact">Contact</a>
 				</nav>
 			</div>
 		</header>
 
-		<main class="container main">
+		<main class:list={[resolvedNav === 'home' ? 'main-home' : 'container main']}>
 			<slot />
 		</main>
 
@@ -88,7 +106,7 @@ const ogDescription = description;
 					});
 				}, { threshold: 0.1 });
 
-				document.querySelectorAll('.fade-in, .subsection, .case-study, .research-entry, .post, .card, .exit').forEach((el) => {
+				document.querySelectorAll('.fade-in, .subsection, .case-study, .research-entry, .post, .card, .exit, .action-card, .fact').forEach((el) => {
 					observer.observe(el);
 				});
 			});
@@ -229,6 +247,12 @@ const ogDescription = description;
 		padding: 56px 0 44px;
 	}
 
+	.main-home {
+		padding: 0;
+		margin: 0;
+		max-width: 100%;
+	}
+
 	.footer {
 		padding: 24px 20px 40px;
 		border-top: 1px solid var(--border);
@@ -247,13 +271,13 @@ const ogDescription = description;
 		}
 	}
 
-	:global(.subsection, .case-study, .research-entry, .post, .card, .exit) {
+	:global(.subsection, .case-study, .research-entry, .post, .card, .exit, .action-card, .fact) {
 		opacity: 0;
 		transform: translateY(30px);
 		transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 	}
 
-	:global(.subsection.is-visible, .case-study.is-visible, .research-entry.is-visible, .post.is-visible, .card.is-visible, .exit.is-visible) {
+	:global(.subsection.is-visible, .case-study.is-visible, .research-entry.is-visible, .post.is-visible, .card.is-visible, .exit.is-visible, .action-card.is-visible, .fact.is-visible) {
 		opacity: 1;
 		transform: translateY(0);
 	}
