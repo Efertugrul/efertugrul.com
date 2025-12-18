@@ -53,17 +53,19 @@ import Layout from '../layouts/Layout.astro';
 	.primary {
 		display: inline-block;
 		color: #ffffff;
-		background: #111827;
+		background: var(--gradient-3);
 		text-decoration: none;
 		font-weight: 600;
 		font-size: 1rem;
-		padding: 0.75rem 1.25rem;
+		padding: 0.75rem 1.5rem;
 		border-radius: 8px;
-		transition: background 0.2s;
+		transition: transform 0.2s, box-shadow 0.2s;
+		box-shadow: 0 4px 12px rgba(236, 72, 153, 0.2);
 	}
 
 	.primary:hover {
-		background: #374151;
+		transform: translateY(-2px);
+		box-shadow: 0 8px 20px rgba(236, 72, 153, 0.3);
 	}
 
 	@media (max-width: 640px) {

@@ -99,12 +99,21 @@ const ogDescription = description;
 <style>
 	:global(:root) {
 		color-scheme: light;
-		--bg: #ffffff;
+		--bg: #fafbfc;
 		--text: #0b1220;
 		--muted: #445066;
 		--border: rgba(15, 23, 42, 0.12);
 		--soft: rgba(15, 23, 42, 0.06);
 		--max: 980px;
+		
+		--accent-primary: #3b82f6;
+		--accent-secondary: #8b5cf6;
+		--accent-teal: #14b8a6;
+		--accent-pink: #ec4899;
+		--accent-light: rgba(59, 130, 246, 0.1);
+		--gradient-1: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+		--gradient-2: linear-gradient(135deg, #14b8a6 0%, #3b82f6 100%);
+		--gradient-3: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
 	}
 
 	:global(html, body) {
@@ -185,6 +194,10 @@ const ogDescription = description;
 		font-weight: 600;
 		text-decoration: none;
 		white-space: nowrap;
+		background: var(--gradient-1);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
 	}
 
 	.nav {
@@ -202,13 +215,14 @@ const ogDescription = description;
 	}
 
 	.nav-link:hover {
-		color: var(--text);
-		background: var(--soft);
+		color: var(--accent-primary);
+		background: var(--accent-light);
 	}
 
 	.nav-link.is-active {
-		color: var(--text);
-		background: var(--soft);
+		color: var(--accent-primary);
+		background: var(--accent-light);
+		font-weight: 500;
 	}
 
 	.main {

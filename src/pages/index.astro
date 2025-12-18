@@ -44,6 +44,13 @@ import Layout from '../layouts/Layout.astro';
 		gap: 24px;
 	}
 
+	h1 {
+		background: linear-gradient(135deg, #111827 0%, #374151 50%, var(--accent-primary) 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
 	.exits {
 		display: grid;
 		grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -54,24 +61,65 @@ import Layout from '../layouts/Layout.astro';
 		display: grid;
 		gap: 6px;
 		padding: 14px 14px;
-		border: 1px solid var(--border);
+		border: 2px solid transparent;
 		border-radius: 16px;
 		text-decoration: none;
 		background: rgba(255, 255, 255, 0.6);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.exit::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		border-radius: 16px;
+		padding: 2px;
+		background: var(--gradient-1);
+		-webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+		-webkit-mask-composite: xor;
+		mask-composite: exclude;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+	}
+
+	.exit:nth-child(2)::before {
+		background: var(--gradient-2);
+	}
+
+	.exit:nth-child(3)::before {
+		background: var(--gradient-3);
 	}
 
 	.exit:hover {
-		background: rgba(15, 23, 42, 0.03);
+		background: rgba(255, 255, 255, 0.9);
+		transform: translateY(-4px);
+		box-shadow: 0 8px 24px rgba(59, 130, 246, 0.12);
+	}
+
+	.exit:hover::before {
+		opacity: 1;
 	}
 
 	.exit-title {
 		font-weight: 600;
 		color: var(--text);
+		position: relative;
+		z-index: 1;
 	}
 
 	.exit-meta {
 		color: var(--muted);
 		font-size: 0.95rem;
+		position: relative;
+		z-index: 1;
+	}
+
+	.exit {
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
 	}
 
 	.below {

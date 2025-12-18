@@ -179,6 +179,11 @@ import Layout from '../layouts/Layout.astro';
 		font-weight: 600;
 		margin: 0 0 0.5rem;
 		letter-spacing: -0.01em;
+		background: var(--gradient-2);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		display: inline-block;
 	}
 
 	.meta {
@@ -190,15 +195,15 @@ import Layout from '../layouts/Layout.astro';
 	}
 
 	.meta a {
-		color: #111827;
+		color: var(--accent-primary);
 		text-decoration: none;
 		font-weight: 500;
-		border-bottom: 1px solid #111827;
+		border-bottom: 2px solid var(--accent-primary);
 		transition: opacity 0.2s;
 	}
 
 	.meta a:hover {
-		opacity: 0.6;
+		opacity: 0.7;
 	}
 
 	.meta span:not(:last-child)::after {

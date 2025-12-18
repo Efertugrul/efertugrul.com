@@ -171,7 +171,7 @@ import Layout from '../layouts/Layout.astro';
 
 		<section id="banking" class="case-study">
 
-			<h2>Core Banking Services — BNP Paribas (TEB)</h2>
+			<h2>Core Banking Services — BNP Paribas</h2>
 			<div class="meta">Software Architect Assistant</div>
 			
 			<svg class="diagram" viewBox="0 0 350 140" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -215,7 +215,7 @@ import Layout from '../layouts/Layout.astro';
 
 			<div class="subsection">
 				<h3>Problem</h3>
-				<p>Core banking at TEB Bank (BNP Paribas): account operations, transactions, funds transfers, loan routing. Millions of retail customers. Strict regulatory compliance (financial audits, PCI-DSS, EU data residency). Performance target: P95 &lt; 200ms for reads, &lt; 1s for transactions. Zero downtime deploys.</p>
+				<p>Core banking at BNP Paribas: account operations, transactions, funds transfers, loan routing. Millions of retail customers. Strict regulatory compliance (financial audits, PCI-DSS, EU data residency). Performance target: P95 &lt; 200ms for reads, &lt; 1s for transactions. Zero downtime deploys.</p>
 			</div>
 
 			<div class="subsection">
@@ -289,10 +289,13 @@ import Layout from '../layouts/Layout.astro';
 		font-weight: 500;
 		font-size: 0.95rem;
 		transition: color 0.2s;
+		padding-bottom: 2px;
+		border-bottom: 2px solid transparent;
 	}
 
 	.toc a:hover {
-		color: #111827;
+		color: var(--accent-primary);
+		border-bottom-color: var(--accent-primary);
 	}
 
 	.case-study {
@@ -311,6 +314,41 @@ import Layout from '../layouts/Layout.astro';
 		margin: 0 0 0.5rem;
 		letter-spacing: -0.015em;
 		color: #111827;
+		position: relative;
+		display: inline-block;
+	}
+
+	#simmunome h2::after {
+		content: '';
+		position: absolute;
+		bottom: -4px;
+		left: 0;
+		width: 100%;
+		height: 3px;
+		background: var(--gradient-1);
+		border-radius: 2px;
+	}
+
+	#compute h2::after {
+		content: '';
+		position: absolute;
+		bottom: -4px;
+		left: 0;
+		width: 100%;
+		height: 3px;
+		background: var(--gradient-2);
+		border-radius: 2px;
+	}
+
+	#banking h2::after {
+		content: '';
+		position: absolute;
+		bottom: -4px;
+		left: 0;
+		width: 100%;
+		height: 3px;
+		background: var(--gradient-3);
+		border-radius: 2px;
 	}
 
 	.meta {
@@ -370,18 +408,29 @@ import Layout from '../layouts/Layout.astro';
 
 	.links a {
 		color: #ffffff;
-		background: #111827;
+		background: var(--gradient-1);
 		text-decoration: none;
 		font-weight: 600;
 		font-size: 0.95rem;
 		padding: 0.65rem 1.25rem;
 		border-radius: 6px;
-		transition: background 0.2s;
+		transition: transform 0.2s, box-shadow 0.2s;
 		display: inline-block;
+		box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+	}
+
+	.links a:nth-child(2) {
+		background: var(--gradient-2);
+		box-shadow: 0 4px 12px rgba(20, 184, 166, 0.2);
 	}
 
 	.links a:hover {
-		background: #374151;
+		transform: translateY(-2px);
+		box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+	}
+
+	.links a:nth-child(2):hover {
+		box-shadow: 0 8px 20px rgba(20, 184, 166, 0.3);
 	}
 
 	:global(strong) {
