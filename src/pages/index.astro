@@ -4,79 +4,480 @@ import Layout from '../layouts/Layout.astro';
 
 <Layout
 	title="Efe Ertugrul"
-	description="We design and ship production systems at the intersection of AI, infrastructure, and scientific research."
+	description="Efe Ertugrul — builder, researcher, and musician."
 	activeNav="home"
 >
-	<section class="hero">
-		<h1>I design and ship production systems at the intersection of AI, infrastructure, and scientific research.</h1>
-		<div class="exits">
-			<a class="exit" href="/systems">
-				<span class="exit-title">Industry Systems</span>
-				<span class="exit-meta">Case studies. Constraints. Tradeoffs.</span>
-			</a>
-			<a class="exit" href="/research">
-				<span class="exit-title">Research</span>
-				<span class="exit-meta">Metadata, schemas, FAIR pipelines.</span>
-			</a>
-			<a class="exit" href="/writing">
-				<span class="exit-title">Writing</span>
-				<span class="exit-meta">Short, opinionated</span>
-			</a>
+	<div class="hero-container">
+		<div class="hero-left">
+			<div class="image-container">
+				<div class="image-stack">
+					<img src="/efert.png" alt="Efe Ertugrul" class="photo-layer active" data-layer="default" />
+					<img src="/efert-software.png" alt="Efe Ertugrul - Software" class="photo-layer" data-layer="software" />
+					<img src="/efert-music.png" alt="Efe Ertugrul - Music" class="photo-layer" data-layer="music" />
+					<img src="/efert-sports.png" alt="Efe Ertugrul - Sports" class="photo-layer" data-layer="sports" />
+					<img src="/efert-research.png" alt="Efe Ertugrul - Research" class="photo-layer" data-layer="research" />
+					<img src="/efert-nature.png" alt="Efe Ertugrul - Nature" class="photo-layer" data-layer="nature" />
+				</div>
+				<a class="floating-badge badge-1" href="/systems">Software</a>
+				<button class="floating-badge badge-2" data-target="music">Music</button>
+				<button class="floating-badge badge-3" data-target="sports">Sports</button>
+				<a class="floating-badge badge-4" href="/research">Research</a>
+				<button class="floating-badge badge-5" data-target="nature">Nature</button>
+				<div class="glow-circle circle-1"></div>
+				<div class="glow-circle circle-2"></div>
+			</div>
 		</div>
-	</section>
 
-	<section class="below">
-		<ul>
-			<li>Own end-to-end systems: architecture → implementation → operations.</li>
-			<li>Ship on Kubernetes in cloud environments with reliability and cost constraints.</li>
-			<li>Build secure data pipelines and performance-critical backends for scientific workloads at <a href="https://simmunome.org" target="_blank" rel="noopener">Simmunome</a>.</li>
-		</ul>
+		<div class="hero-right">
+			<div class="content-wrapper">
+				<h1 class="title">
+					<span class="title-line">Builder.</span>
+					<span class="title-line highlight">Researcher.</span>
+					<span class="title-line gradient-text">Entrepreneur.</span>
+				</h1>
 
-		<p class="cta">
-			I'm Efe Ertugrul. If you want to see how I think, start here → <a href="/writing">Writing</a>
-		</p>
-	</section>
+				<div class="quick-facts">
+					<div class="fact">
+						<div class="fact-icon">01</div>
+						<div class="fact-text">Systems work: infrastructure + backend, built to survive real constraints.</div>
+					</div>
+					<div class="fact">
+						<div class="fact-icon">02</div>
+						<div class="fact-text">
+							Research: metadata, schemas, and tooling around bioimaging + FAIR data.
+						</div>
+					</div>
+					<div class="fact">
+						<div class="fact-icon">03</div>
+						<div class="fact-text">
+							Music: groove-first, time-obsessed drums and guitar.
+						</div>
+					</div>
+					<div class="fact">
+						<div class="fact-icon">04</div>
+						<div class="fact-text">
+							McGill University graduate (Computer Science; Statistics).
+						</div>
+					</div>
+				</div>
+
+				<div class="cta-section">
+					<p class="intro-text">I'm Efe Ertugrul. Start anywhere:</p>
+					<div class="action-grid">
+						<a class="action-card" href="/systems">
+							<span class="action-label">Systems</span>
+							<span class="action-desc">Real-world case studies</span>
+						</a>
+						<a class="action-card" href="/research">
+							<span class="action-label">Research</span>
+							<span class="action-desc">Metadata & FAIR data</span>
+						</a>
+						<a class="action-card" href="/writing">
+							<span class="action-label">Writing</span>
+							<span class="action-desc">How I think</span>
+						</a>
+						<a class="action-card" href="/music">
+							<span class="action-label">Music</span>
+							<span class="action-desc">Coming soon</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </Layout>
 
 <style>
-	.hero {
+	.hero-container {
 		display: grid;
-		gap: 24px;
+		grid-template-columns: 45% 55%;
+		min-height: calc(100vh - 120px);
+		gap: 0;
+		margin: 0 -20px;
+		padding: 0;
 	}
 
-	h1 {
-		background: linear-gradient(135deg, #111827 0%, #374151 50%, var(--accent-primary) 100%);
+	.hero-left {
+		position: relative;
+		background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+	}
+
+	.image-container {
+		position: relative;
+		height: 100%;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 3rem 2rem;
+	}
+
+	.image-stack {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		max-height: 85vh;
+		z-index: 2;
+		perspective: 1500px;
+		transition: filter 0.4s ease;
+	}
+
+	.image-stack.transitioning {
+		animation: containerPulse 0.8s ease-out;
+	}
+
+	@keyframes containerPulse {
+		0%, 100% {
+			filter: brightness(1);
+		}
+		50% {
+			filter: brightness(1.08);
+		}
+	}
+
+	.photo-layer {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+		border-radius: 24px;
+		box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2), 0 10px 30px rgba(0, 0, 0, 0.15);
+		opacity: 0;
+		backface-visibility: hidden;
+		transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+		transform: scale(0.92) rotateY(-20deg);
+	}
+
+	.photo-layer.active {
+		opacity: 1;
+		transform: scale(1) rotateY(0deg);
+		animation: photoEntry 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+		position: relative;
+	}
+
+	.photo-layer.active::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(90deg, 
+			transparent 0%, 
+			rgba(255, 255, 255, 0.3) 50%, 
+			transparent 100%
+		);
+		border-radius: 24px;
+		animation: shimmer 1.2s ease-out;
+		pointer-events: none;
+	}
+
+	.photo-layer.exiting {
+		animation: photoExit 0.8s cubic-bezier(0.6, -0.28, 0.74, 0.05) forwards;
+	}
+
+	@keyframes photoEntry {
+		0% {
+			opacity: 0;
+			transform: scale(0.92) rotateY(20deg) translateZ(-100px);
+		}
+		60% {
+			transform: scale(1.02) rotateY(-3deg) translateZ(20px);
+		}
+		100% {
+			opacity: 1;
+			transform: scale(1) rotateY(0deg) translateZ(0);
+		}
+	}
+
+	@keyframes photoExit {
+		0% {
+			opacity: 1;
+			transform: scale(1) rotateY(0deg) translateZ(0);
+		}
+		100% {
+			opacity: 0;
+			transform: scale(0.88) rotateY(-25deg) translateZ(-120px);
+		}
+	}
+
+	@keyframes shimmer {
+		0% {
+			left: -100%;
+		}
+		100% {
+			left: 100%;
+		}
+	}
+
+	.image-stack:hover .photo-layer.active {
+		transform: scale(1.01) translateY(-8px) rotateY(0deg);
+		box-shadow: 0 40px 80px rgba(0, 0, 0, 0.25), 0 15px 40px rgba(59, 130, 246, 0.2);
+	}
+
+	.floating-badge {
+		position: absolute;
+		padding: 10px 18px;
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(10px);
+		border-radius: 24px;
+		font-weight: 600;
+		font-size: 0.875rem;
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.08);
+		z-index: 4;
+		animation: float 3s ease-in-out infinite;
+		border: 1px solid rgba(255, 255, 255, 0.6);
+		cursor: pointer;
+		transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+		font-family: inherit;
+		text-decoration: none;
+	}
+
+	.floating-badge:hover {
+		transform: translateY(-4px) !important;
+		box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18), 0 6px 12px rgba(0, 0, 0, 0.12);
+	}
+
+	.floating-badge:active {
+		transform: translateY(-2px) scale(0.98) !important;
+	}
+
+	.badge-1 {
+		top: 12%;
+		left: 8%;
+		animation-delay: 0s;
+		background: linear-gradient(135deg, rgba(59, 130, 246, 0.95), rgba(99, 102, 241, 0.95));
+		color: white;
+		border: none;
+	}
+
+	.badge-1.active {
+		background: linear-gradient(135deg, rgba(59, 130, 246, 1), rgba(99, 102, 241, 1));
+		box-shadow: 0 12px 40px rgba(59, 130, 246, 0.4);
+	}
+
+	.badge-2 {
+		top: 32%;
+		right: 10%;
+		animation-delay: 0.7s;
+		background: linear-gradient(135deg, rgba(236, 72, 153, 0.95), rgba(251, 113, 133, 0.95));
+		color: white;
+		border: none;
+	}
+
+	.badge-2.active {
+		background: linear-gradient(135deg, rgba(236, 72, 153, 1), rgba(251, 113, 133, 1));
+		box-shadow: 0 12px 40px rgba(236, 72, 153, 0.4);
+	}
+
+	.badge-3 {
+		bottom: 35%;
+		left: 12%;
+		animation-delay: 1.2s;
+		background: linear-gradient(135deg, rgba(20, 184, 166, 0.95), rgba(14, 165, 233, 0.95));
+		color: white;
+		border: none;
+	}
+
+	.badge-3.active {
+		background: linear-gradient(135deg, rgba(20, 184, 166, 1), rgba(14, 165, 233, 1));
+		box-shadow: 0 12px 40px rgba(20, 184, 166, 0.4);
+	}
+
+	.badge-4 {
+		bottom: 18%;
+		right: 8%;
+		animation-delay: 1.8s;
+		background: rgba(255, 255, 255, 0.95);
+		color: var(--accent-primary);
+		border: 2px solid var(--accent-primary);
+	}
+
+	.badge-4.active {
+		background: var(--accent-primary);
+		color: white;
+		box-shadow: 0 12px 40px rgba(59, 130, 246, 0.4);
+	}
+
+	.badge-5 {
+		top: 55%;
+		left: 8%;
+		animation-delay: 2.3s;
+		background: linear-gradient(135deg, rgba(34, 197, 94, 0.95), rgba(74, 222, 128, 0.95));
+		color: white;
+		border: none;
+	}
+
+	.badge-5.active {
+		background: linear-gradient(135deg, rgba(34, 197, 94, 1), rgba(74, 222, 128, 1));
+		box-shadow: 0 12px 40px rgba(34, 197, 94, 0.4);
+	}
+
+	@keyframes float {
+		0%, 100% {
+			transform: translateY(0px);
+		}
+		50% {
+			transform: translateY(-15px);
+		}
+	}
+
+	.glow-circle {
+		position: absolute;
+		border-radius: 50%;
+		filter: blur(60px);
+		opacity: 0.3;
+		z-index: 1;
+		animation: pulse 4s ease-in-out infinite;
+	}
+
+	.circle-1 {
+		width: 300px;
+		height: 300px;
+		background: var(--accent-primary);
+		top: 10%;
+		right: 10%;
+		animation-delay: 0s;
+	}
+
+	.circle-2 {
+		width: 250px;
+		height: 250px;
+		background: var(--accent-secondary);
+		bottom: 15%;
+		left: 15%;
+		animation-delay: 2s;
+	}
+
+	@keyframes pulse {
+		0%, 100% {
+			transform: scale(1);
+			opacity: 0.3;
+		}
+		50% {
+			transform: scale(1.2);
+			opacity: 0.2;
+		}
+	}
+
+	.hero-right {
+		display: flex;
+		align-items: center;
+		padding: 4rem 3rem;
+		background: white;
+	}
+
+	.content-wrapper {
+		max-width: 580px;
+	}
+
+	.title {
+		font-size: clamp(2rem, 3vw, 3rem);
+		font-weight: 700;
+		line-height: 1.2;
+		margin: 0 0 2.5rem;
+		letter-spacing: -0.03em;
+	}
+
+	.title-line {
+		display: block;
+		color: var(--text);
+	}
+
+	.title-line.highlight {
+		background: var(--gradient-1);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		font-size: 1.1em;
+	}
+
+	.title-line.gradient-text {
+		background: var(--gradient-2);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-clip: text;
 	}
 
-	.exits {
-		display: grid;
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-		gap: 12px;
+	.quick-facts {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		margin-bottom: 3rem;
 	}
 
-	.exit {
+	.fact {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.75rem;
+	}
+
+	.fact-icon {
+		font-size: 0.9rem;
+		line-height: 1.2;
+		flex-shrink: 0;
+		font-weight: 700;
+		color: var(--accent-primary);
+		background: rgba(59, 130, 246, 0.10);
+		border: 1px solid rgba(59, 130, 246, 0.20);
+		padding: 0.35rem 0.55rem;
+		border-radius: 999px;
+	}
+
+	.fact-text {
+		color: var(--muted);
+		font-size: 1rem;
+		line-height: 1.6;
+		padding-top: 2px;
+	}
+
+	.cta-section {
+		padding-top: 2rem;
+		border-top: 2px solid var(--border);
+	}
+
+	.intro-text {
+		font-size: 1.125rem;
+		font-weight: 500;
+		color: var(--text);
+		margin: 0 0 1.25rem;
+	}
+
+	.action-grid {
 		display: grid;
-		gap: 6px;
-		padding: 14px 14px;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 0.75rem;
+	}
+
+	.action-card {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		padding: 1rem 0.75rem;
+		background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(139, 92, 246, 0.08));
 		border: 2px solid transparent;
-		border-radius: 16px;
+		border-radius: 12px;
 		text-decoration: none;
-		background: rgba(255, 255, 255, 0.6);
+		transition: all 0.3s ease;
 		position: relative;
 		overflow: hidden;
 	}
 
-	.exit::before {
+	.action-card::before {
 		content: '';
 		position: absolute;
 		top: 0;
 		left: 0;
 		right: 0;
 		bottom: 0;
-		border-radius: 16px;
+		border-radius: 12px;
 		padding: 2px;
 		background: var(--gradient-1);
 		-webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -86,56 +487,178 @@ import Layout from '../layouts/Layout.astro';
 		transition: opacity 0.3s ease;
 	}
 
-	.exit:nth-child(2)::before {
+	.action-card:nth-child(2)::before {
 		background: var(--gradient-2);
 	}
 
-	.exit:nth-child(3)::before {
+	.action-card:nth-child(3)::before {
 		background: var(--gradient-3);
 	}
 
-	.exit:hover {
-		background: rgba(255, 255, 255, 0.9);
+	.action-card:hover {
 		transform: translateY(-4px);
-		box-shadow: 0 8px 24px rgba(59, 130, 246, 0.12);
+		box-shadow: 0 12px 24px rgba(59, 130, 246, 0.15);
+		background: white;
 	}
 
-	.exit:hover::before {
+	.action-card:hover::before {
 		opacity: 1;
 	}
 
-	.exit-title {
-		font-weight: 600;
+	.action-label {
+		font-weight: 700;
+		font-size: 1.125rem;
 		color: var(--text);
 		position: relative;
 		z-index: 1;
 	}
 
-	.exit-meta {
+	.action-desc {
+		font-size: 0.875rem;
 		color: var(--muted);
-		font-size: 0.95rem;
 		position: relative;
 		z-index: 1;
 	}
 
-	.exit {
-		transition: transform 0.3s ease, box-shadow 0.3s ease;
-	}
-
-	.below {
-		margin-top: 32px;
-		padding-top: 18px;
-		border-top: 1px solid var(--border);
-	}
-
-	.cta {
-		margin-top: 12px;
-		color: var(--text);
-	}
-
-	@media (max-width: 760px) {
-		.exits {
+	@media (max-width: 1024px) {
+		.hero-container {
 			grid-template-columns: 1fr;
+			min-height: auto;
+		}
+
+		.hero-left {
+			min-height: 65vh;
+			order: 2;
+		}
+
+		.hero-right {
+			order: 1;
+			padding: 3rem 2rem;
+		}
+
+		.image-container {
+			padding: 2rem 1.5rem;
+		}
+
+		.cutout-image {
+			max-height: 55vh;
+			border-radius: 20px;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.hero-right {
+			padding: 2rem 1.5rem;
+		}
+
+		.action-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.floating-badge {
+			font-size: 0.75rem;
+			padding: 6px 12px;
+		}
+
+		.hero-left {
+			min-height: 55vh;
+		}
+
+		.image-container {
+			padding: 1.5rem 1rem;
+		}
+
+		.cutout-image {
+			max-height: 45vh;
+			border-radius: 16px;
+		}
+
+		.badge-1 {
+			top: 8%;
+			left: 5%;
+		}
+
+		.badge-2 {
+			top: 28%;
+			right: 5%;
+		}
+
+		.badge-3 {
+			top: 48%;
+			left: 5%;
+		}
+
+		.badge-4 {
+			bottom: 15%;
+			right: 5%;
+		}
+
+		.badge-5 {
+			bottom: 32%;
+			left: 5%;
 		}
 	}
 </style>
+
+<script>
+	document.addEventListener('astro:page-load', () => {
+		const badges = document.querySelectorAll('.floating-badge[data-target]');
+		const photoLayers = document.querySelectorAll('.photo-layer');
+		const imageStack = document.querySelector('.image-stack');
+		
+		badges.forEach((badge) => {
+			badge.addEventListener('click', () => {
+				const target = badge.getAttribute('data-target');
+				
+				badges.forEach(b => b.classList.remove('active'));
+				badge.classList.add('active');
+				
+				if (imageStack) {
+					imageStack.classList.add('transitioning');
+					setTimeout(() => imageStack.classList.remove('transitioning'), 800);
+				}
+				
+				const currentActive = document.querySelector('.photo-layer.active');
+				if (currentActive) {
+					currentActive.classList.add('exiting');
+					setTimeout(() => {
+						currentActive.classList.remove('active', 'exiting');
+					}, 800);
+				}
+				
+				const targetLayer = document.querySelector(`[data-layer="${target}"]`);
+				if (targetLayer) {
+					setTimeout(() => {
+						targetLayer.classList.add('active');
+					}, 100);
+				}
+			});
+		});
+		
+		if (imageStack) {
+			imageStack.addEventListener('click', (e) => {
+				if (e.target.classList.contains('photo-layer') && e.target.classList.contains('active')) {
+					badges.forEach(b => b.classList.remove('active'));
+					
+					imageStack.classList.add('transitioning');
+					setTimeout(() => imageStack.classList.remove('transitioning'), 800);
+					
+					const currentActive = document.querySelector('.photo-layer.active');
+					if (currentActive) {
+						currentActive.classList.add('exiting');
+						setTimeout(() => {
+							currentActive.classList.remove('active', 'exiting');
+						}, 800);
+					}
+					
+					const defaultLayer = document.querySelector('[data-layer="default"]');
+					if (defaultLayer) {
+						setTimeout(() => {
+							defaultLayer.classList.add('active');
+						}, 100);
+					}
+				}
+			});
+		}
+	});
+</script>
